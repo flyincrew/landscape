@@ -8,8 +8,7 @@ tasks:
     run: "once"
     deps:
       - init:lefthooks
-      - init:npm
-      - init:build-tokens
+      # - init:build-tokens # BUG: fix build-token task
   init:lefthooks:
     silent: true
     internal: true
@@ -24,8 +23,6 @@ tasks:
     silent: true
     internal: true
     run: "once"
-    deps:
-      - init:npm
     cmds:
       - npm run build-tokens
     sources:
@@ -34,15 +31,6 @@ tasks:
       - ./config.js
       - ./svelte.config.js
       - ./tokens/**/*
-  init:npm:
-    silent: true
-    internal: true
-    run: "once"
-    cmds:
-      - npm install
-    sources:
-      - ./package-lock.json
-      - ./package.json
   format:
     silent: true
     desc: 📝 Format project files
@@ -55,7 +43,6 @@ tasks:
     run: "once"
     deps:
       - init:build-tokens
-      - init:npm
     cmds:
       - npm run build-storybook
   build:
@@ -64,7 +51,6 @@ tasks:
     run: "once"
     deps:
       - init:build-tokens
-      - init:npm
     cmds:
       - npm run build
   check:npm:
@@ -73,7 +59,6 @@ tasks:
     internal: true
     deps:
       - init:build-tokens
-      - init:npm
     cmds:
       - npm run check
   check:test:
@@ -82,7 +67,6 @@ tasks:
     run: "once"
     deps:
       - init:build-tokens
-      - init:npm
     cmds:
       - npm run test
   check:tailwind:
@@ -91,7 +75,6 @@ tasks:
     run: "once"
     deps:
       - init:build-tokens
-      - init:npm
     cmds:
       - npm run build-tailwind
   check:
@@ -103,3 +86,15 @@ tasks:
       - check:test
       - lint
       - check:tailwind
+  watch:storybook:
+    desc: 💻 Run storybook local server to develop components
+    silent: true
+    run: "once"
+    cmds:
+      - npm run storybook
+  watch:svelte:
+    desc: 🐚 Run svelte local server and tests to develop website
+    silent: true
+    run: "once"
+    cmds:
+      - npm run check:watch

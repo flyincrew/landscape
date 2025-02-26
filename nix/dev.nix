@@ -22,6 +22,9 @@
           ++ config.buildPackages
           ++ config.checkPackages;
         shellHook = ''
+          set -x
+          source ${pkgs.importNpmLock.linkNodeModulesHook}/nix-support/setup-hook
+          set +x
           ${pkgs.go-task}/bin/task --verbose --output prefixed
           printf "You can run project tasks using cli:\n  task\n\n"
           ${pkgs.go-task}/bin/task --list
